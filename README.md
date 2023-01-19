@@ -4,14 +4,15 @@
 
 - [x] Create a new project
 - [x] Add tailwind CSS
-- [ ] Design the UI
-- [ ] Add firebase
-- [ ] Add database
-- [ ] Create feed
-- [ ] Add authentication
-- [ ] Add sign up
-- [ ] Add sign in
-- [ ] Add sign out
+- [x] Design the UI
+- [x] Create feed
+- [x] Create supabase project
+- [x] Add supabase SDK (Software Development Kit)
+- [x] Add database
+- [x] Add authentication
+- [x] Add sign up
+- [x] Add sign in
+- [x] Add sign out
 - [ ] Create twoot
 - [ ] Delete own twoot
 - [ ] Like/unlike twoot
@@ -27,7 +28,7 @@
 
 ## Description
 
-Vite + Tailwins CSS + Firebase
+Vite (https://vitejs.dev/) + Tailwind CSS (https://tailwindcss.com/) + Supabase (https://supabase.com/)
 
 ## Project setup
 

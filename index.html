@@ -3,21 +3,41 @@
 
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" type="image/svg+xml" href="/vite.svg"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link
+    rel="icon"
+    type="image/svg+xml"
+    href="/vite.svg"
+  />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  >
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
+    rel="stylesheet"
+  >
   <title>Twotter</title>
 </head>
 
 <body class="flex flex-col justify-center items-start md:gap-4 md:flex-row">
-  <section class="top-0 sticky bg-white border-b border-gray-200 flex items-center justify-between px-4 md:max-w-xs md:top-4 md:border-none md:p-0 md:w-auto">
+  <section
+    class="sticky top-0 bg-white w-full border-b border-gray-200 flex justify-between items-center px-4 md:max-w-xs md:top-4 md:border-none md:p-0 md:w-auto"
+  >
     <img
       src="twotter.png"
       alt="Logo"
       class="w-14"
     >
+
     <button class="border-2 border-blue-500 text-blue-500 rounded-2xl py-1 px-6 md:hidden">Log in</button>
   </section>
 
@@ -25,66 +45,52 @@
     <h1 class="font-bold text-2xl">Tweets</h1>
 
     <ul class="space-y-6 mt-6">
-      <li class="flex gap-4 items-start border-b pb-6">
-        <div class="  w-48 h-14 rounded-full">
-          <img
-            src="sauli.jpg"
-            alt=""
-            class="rounded-full"
-          >
-        </div>
-        <div>
-          <div class="flex gap-2 text-gray-500">
-            <span class="font-semibold text-black">Sauli Niinistö</span>
-            <span>@niinisto</span>
-            <span>12h</span>
-          </div>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus, incidunt minima exercitationem omnis
-            atque fuga assumenda accusamus. Nemo repellat dolorem quos, officia labore distinctio deserunt aliquam vitae
-            rem? Provident, officia!</p>
-
-          <button class="flex items-center gap-2 mt-1 cursor-pointer hover:text-red-300">
-            <i class="ph-heart text-xl"></i>
-            <span class="text-sm">23</span>
-          </button>
-        </div>
-      </li>
-
-      <li class="flex gap-4 items-start">
-        <div class="  w-48 h-14 rounded-full">
-          <img
-            src="sauli.jpg"
-            alt=""
-            class="rounded-full"
-          >
-        </div>
-        <div>
-          <div class="flex gap-2 text-gray-500">
-            <span class="font-semibold text-black">Sauli Niinistö</span>
-            <span>@niinisto</span>
-            <span>12h</span>
-          </div>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus, incidunt minima exercitationem omnis
-            atque fuga assumenda accusamus. Nemo repellat dolorem quos, officia labore distinctio deserunt aliquam vitae
-            rem? Provident, officia!</p>
-
-          <div class="flex items-center gap-2 mt-1">
-            <i class="ph-heart text-xl"></i>
-            <span class="text-sm">23</span>
-          </div>
-        </div>
-      </li>
     </ul>
   </main>
-  <section class="top-4 left-0 sticky max-w-xs hidden  md:block">
-    <div class="border border-gray-200 p-4 rounded-xl space-y-6 mb-2 ">
-      <h2 class="font-bold text-xl">New on Twotter?</h2>
-      <button class="border border-gray-300 p-2 rounded-3xl flex justify-center items-center gap-2 w-full hover:bg-gray-200">
-        <i class="ph-google-logo-bold text-2xl"></i>
-        Sign up with Google
-      </button>
-      <p class="text-sm text-gray-500">By signing up, you agree to the Terms of Service and Privacy Policy, including Cookie Use.</p>
+
+  <section class="top-4 left-0 sticky max-w-xs hidden md:block">
+    <div
+      id="login"
+      class="border border-gray-200 p-4 rounded-xl space-y-4 mb-2"
+    >
+      <h2 class="font-bold text-xl">New to Twotter?</h2>
+      <form class="space-y-4">
+        <input
+          type="email"
+          placeholder="Email"
+          class="border border-gray-300 py-2 px-4 rounded-3xl w-full"
+        >
+        <input
+          type="password"
+          placeholder="Password"
+          class="border border-gray-300 py-2 px-4 rounded-3xl w-full"
+        >
+
+        <button
+          type="submit"
+          class="border border-gray-300 p-2 rounded-3xl flex justify-center items-center gap-2 w-full hover:bg-gray-200"
+        >
+          <i class="ph-paper-plane-right text-2xl"></i>
+          Sign in
+        </button>
+      </form>
+      <p class="text-sm text-gray-500">By signing up, you agree to the Terms of Service and Privacy Policy, including
+        Cookie Use.</p>
     </div>
+
+    <div
+      id="logout"
+      class="hidden border border-gray-200 p-4 rounded-xl space-y-4 mb-2 min-w-[220px]"
+    >
+      <h2></h2>
+      <button
+        class="border border-gray-300 p-2 rounded-3xl flex justify-center items-center gap-2 w-full hover:bg-gray-200"
+      >
+        <i class="ph-paper-plane-right text-2xl"></i>
+        Sign out
+      </button>
+    </div>
+
     <p class="text-sm text-gray-500 pl-4">© 2023 Twotter, Inc.</p>
   </section>
 
