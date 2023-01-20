@@ -5,23 +5,34 @@ import { supabase } from './supabase.js'
 
 // Listen to auth events
 supabase.auth.onAuthStateChange((event, session) => {
+  const loginEl = document.querySelector("#login")
+  const logoutEl =  document.querySelector("#logout")
+  const newTweetEl =   document.querySelector("main > div")
+
+  //If logged in
   if (event == 'SIGNED_IN') {
     console.log('SIGNED_IN', session)
 
     // Hide login
-    document.querySelector("#login").classList.add("hidden")
+  loginEl.classList.add("hidden")
 
     // Show logout
     document.querySelector("#logout > h2").innerText = session.user.email
-    document.querySelector("#logout").classList.remove("hidden")
+  logoutEl.classList.remove("hidden")
+  //Show new tweet
+  newTweetEl.classList.remove("hidden")
   }
 
+//if logged out
   if (event == 'SIGNED_OUT') {
     // Show login
-    document.querySelector("#login").classList.remove("hidden")
+  loginEl.classList.remove("hidden")
 
     // Hide logout
-    document.querySelector("#logout").classList.add("hidden")
+  logoutEl.classList.add("hidden")
+  
+    //Hide new tweet
+  newTweetEl.classList.add("hidden")
   }
 })
 
@@ -33,10 +44,11 @@ form.addEventListener("submit", async function (event) {
   const email = form[0].value
   const password = form[1].value
 
+  //Stop page from refreshing
   event.preventDefault()
 
   // Login
-  const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
+  const { error: signInError } = await supabase.auth.signInWithPassword({
     email,
     password,
   })
@@ -50,8 +62,17 @@ form.addEventListener("submit", async function (event) {
         password,
       })
 
+      //Create user in database
+    if(signUpData.user.id) {
+        const { error } = await supabase
+      .from('users')
+      .insert({username: signUpData.user.email})
+
+      if (error) console.log(error)
+      }
+
       // If user already registered
-      if (signUpError.message === "User already registered") {
+    if (signUpError.message === "User already registered") {
         alert(signInError.message)
       } else {
         alert(signUpError.message)
@@ -66,31 +87,54 @@ const signOutButton = document.querySelector("#logout > button")
 signOutButton.addEventListener("click", async function () {
   const { error } = await supabase.auth.signOut()
 
-  if (error) {
-    console.log(error)
-  }
+  if (error) console.log(error)
 })
 
 // Tweets
+
+//Listen for changes to database table
+supabase
+.channel ("public:Twoots")
+.on ("postgres_changes", {event:"INSERT", schema: "public", table:"Twoots"}, newTwoot)
+.subscribe()
+
+let newTwootCount = 0
+
+function newTwoot(e){
+  newTwootCount++
+
+  const newTwootsEl = document.querySelector("#new-twoots")
+
+  newTwootsEl.innerText = `Show ${newTwootCount} Twoots`
+  newTwootsEl.classList.remove("hidden")
+}
+
+//Refresh feed
+document.querySelector("#new-twoots").addEventListener("click", function(){
+document.querySelector("#new-twoots").classList.add("hidden")
+document.querySelector('ul').replaceChildren()
+newTwootCount = 0
+  getTweets()
+})
+
 async function getTweets() {
   // Get data from database
   const { data, error } = await supabase
     .from('Twoots')
     .select(`
-    id,
-    message,
-    created_at,
-    users (
-      username,
-      name
+      id,
+      message,
+      created_at,
+      users (
+      username
     )
-    `)
+    `).order("created_at", {ascending:false})
 
-  if (error) {
-    console.log(error)
-  }
+  if (error) console.log(error)
 
   const listEl = document.querySelector('ul')
+
+  const { data: user } = await supabase.auth.getSession()
 
   // Loop over tweets
   for (const i of data) {
@@ -104,22 +148,54 @@ async function getTweets() {
           alt=""
         >
       </div>
-      <div>
+      <div">
         <div class="flex gap-2 text-gray-500">
-          <span class="font-semibold text-black">${i.users.name}</span>
-          <span>@${i.users.username}</span>
+          <span class="font-semibold text-black">${i.users.username}</span>
           <span>${new Date(i.created_at).toLocaleString()}</span>
+          <i class="ph-trash text-xl text-blue-500 cursor-pointer ${i.users.username == user.session?.user.email ? "" : "hidden"}"></i>
         </div>
         <p>${i.message}</p>
-        <button class="flex items-center gap-2 mt-1  hover:text-red-300">
-          <i class="ph-heart text-xl"></i>
-          <span class="text-sm">0</span>
-        </button>
+
       </div>
     `
 
+    //Delete tweet
+itemEl.addEventListener("click",async function(){
+const { error } = await supabase
+  .from('Twoots')
+  .delete()
+  .eq('id', i.id)
+
+  //Delete element 
+  itemEl.remove()
+
+  if(error) console.log(error)
+    })
+
     listEl.appendChild(itemEl)
+
   }
 }
 
 getTweets()
+
+
+
+//New tweet
+document.querySelector("#tweet").addEventListener("click",async function(){
+ const text = document.querySelector("textarea")
+ const { data, error } = await supabase.auth.getSession()
+
+ if(error) console.log(error)
+
+if(data.session.user.id){
+  const { error } = await supabase
+  .from('Twoots')
+  .insert({message: text.value})
+
+  if(error) console.log(error)
+
+  //Clear input
+  text.value = ""
+}
+})

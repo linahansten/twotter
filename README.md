@@ -13,13 +13,14 @@
 - [x] Add sign up
 - [x] Add sign in
 - [x] Add sign out
-- [ ] Create twoot
-- [ ] Delete own twoot
-- [ ] Like/unlike twoot
-- [ ] Support images
+- [x] Create twoot
+- [x] Update feed
+- [x] Delete own twoot
 
 ## Extra
 
+- [ ] Like/unlike twoot
+- [ ] Support images
 - [ ] Comment twoot
 - [ ] Add profile
 - [ ] Pagination/Infinite scroll
